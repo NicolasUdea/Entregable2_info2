@@ -1,13 +1,15 @@
 from Graficadora import *
 from funciones import *
 from logos import *
+from time import sleep
 import os
 
 
 def main():
     print(sep())
     print(logo1)
-    print(f'Bienvenido a la graficadora de señales.')
+    print(f'Bienvenido a la graficadora de señales "BioSignal".')
+    sleep(4)
     while True:
         print(sep())
         menu = verificarInt('''Seleccione una opción:
@@ -24,15 +26,52 @@ def main():
                 ruta = os.path.join(os.getcwd(), 'data', 'r01_edfm.mat')
                 graficadora = Graficadora(ruta)
                 print(sep())
-                print('Ha seleccionado graficar una señal fisiológica.')
+                print('Ha seleccionado "señal fisiológica".')
                 print(sep())
-                min = verificarInt('Ingrese el valor mínimo del rango a graficar: ')
-                max = verificarInt('Ingrese el valor máximo del rango a graficar: ')
-                arreglo = verificarInt('Ingrese el número de arreglo a graficar: ')
+                sleep(4)
+                num_graficas = verificarInt('''Seleccione una opción:
+                1. Gráficar una sola sola señal.
+                2. Gráficar todas las señales.
+                > ''')
+                if num_graficas == 1:  # Graficar una sola señal
+                    inicio = verificarInt('Ingrese el valor mínimo del rango a graficar: ')
+                    final = verificarInt('Ingrese el valor máximo del rango a graficar: ')
+                    while True:
+                        arreglo = verificarInt('Ingrese el número de arreglo a graficar: ')
+                        if arreglo > 5 or arreglo < 1:
+                            print('Seleccione uno de los 5 arreglos disponibles.')
+                        else:
+                            break
+                    print(sep())
+                    graficadora.graficar_uno(inicio, final, arreglo - 1)
+                    print('Gráfica generada.')
+                    presionaEnter()
+                elif num_graficas == 2:  # Graficar todas las señales
+                    inicio = verificarInt('Ingrese el valor mínimo del rango a graficar: ')
+                    final = verificarInt('Ingrese el valor máximo del rango a graficar: ')
+                    print(sep())
+                    graficadora.graficar_todos(inicio, final)
+                    print('Gráfica generada.')
+                    presionaEnter()
+                else:
+                    print('Seleccione una opción válida.')
+            elif tipo == 2:  # Señal de EEG
+                ruta = os.path.join(os.getcwd(), 'data', 'csv_file.csv')
+                graficadora = Graficadora(ruta)
                 print(sep())
-                graficadora.graficar(min, max, arreglo-1)
-                print('Gráfica generada.')
-                presionaEnter()
+                print('Ha seleccionado "señal de EEG".')
+                print(sep())
+                sleep(4)
+                menu2 = verificarInt('''Seleccione una opción:
+                1. Promedio de datos.
+                2. Gráfica de puntos utilizando el promedio como eje X.
+                3. Gráfica utilizando la longitud de la misma columna como eje X.
+                4. Gráfica de los datos pares.
+                5. Gráfica con función seno.
+                > ''')
+
+
+
 
 
 if __name__ == '__main__':
