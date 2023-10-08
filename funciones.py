@@ -22,5 +22,5 @@ def presionaEnter():
     input("Presione Enter para continuar...")
 
 
-def separador():
+def sep():
     return "\n" + ("⬜" * 50) + "\n"
