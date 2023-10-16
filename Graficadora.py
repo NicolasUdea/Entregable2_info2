@@ -48,7 +48,6 @@ class Graficadora:
             plt.legend(['S1', 'S2', 'S3', 'S4', 'S5'], loc='upper right', fontsize=12)
             plt.show()
 
-
     def graficar_espectro(self, inicio, fin, arreglo):
         espectro = np.fft.fft(self.__data['val'][arreglo][inicio:fin])
         frecuencias = np.fft.fftfreq(len(espectro))
@@ -64,3 +63,51 @@ class Graficadora:
     def promedio_datos_csv(self):
         promedio = self.__data.mean()
         return promedio
+
+    def graficar_puntos_promedio(self, columna):
+        promedio = self.__data[columna].mean()
+        eje_x = [promedio] * len(self.__data[columna])
+        eje_y = self.__data[columna]
+        with plt.style.context('dark_background'):
+            plt.plot(eje_x, eje_y, 'o')
+            plt.xlabel('Promedio', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Gráfica de puntos', fontsize=18, color='white', fontweight='bold')
+            plt.show()
+
+    def graficar_longitud(self, columna):
+        eje_x = np.arange(len(self.__data[columna]))
+        eje_y = self.__data[columna]
+        with plt.style.context('dark_background'):
+            plt.plot(eje_x, eje_y)
+            plt.xlabel('Longitud', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Gráfica de longitud', fontsize=18, color='white', fontweight='bold')
+            plt.show()
+
+    def graficar_pares(self, columna):
+        eje_x = []
+        eje_y = []
+        for i in range(len(self.__data[columna])):
+            if i % 2 == 0:
+                eje_x.append(i)
+                eje_y.append(self.__data[columna][i])
+            else:
+                eje_x.append(i)
+                eje_y.append(0)
+        with plt.style.context('dark_background'):
+            plt.plot(eje_x, eje_y, 'o')
+            plt.xlabel('Longitud', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Gráfica de datos pares', fontsize=18, color='white', fontweight='bold')
+            plt.show()
+
+    def graficar_seno(self, columna):
+        eje_x = np.arange(len(self.__data[columna]))
+        eje_y = np.sin(self.__data[columna])
+        with plt.style.context('dark_background'):
+            plt.plot(eje_x, eje_y)
+            plt.xlabel('Longitud', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Gráfica de función seno', fontsize=18, color='white', fontweight='bold')
+            plt.show()
