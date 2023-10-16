@@ -20,6 +20,7 @@ class Graficadora:
             plt.xlabel('Tiempo (s)', fontsize=14, color='white', fontweight='bold')
             plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
             plt.title('Señal fisiológica (NVF-JJG)', fontsize=18, color='white', fontweight='bold')
+            plt.axhline(y=self.__data['val'][arreglo].mean(), color='r', linestyle='--')
             plt.show()
 
     def graficar_todos(self, inicio, fin):
@@ -32,6 +33,32 @@ class Graficadora:
             plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
             plt.title('Señal fisiológica', fontsize=18, color='white', fontweight='bold')
             plt.legend(['S1', 'S2', 'S3', 'S4', 'S5'], loc='upper right', fontsize=12)
+            plt.show()
+
+    # Gráficar todos los arreglos que el usuario seleccione
+    def graficar_varios(self, inicio, fin, arreglo):
+        with plt.style.context('dark_background'):
+            x = np.arange(inicio, fin)
+            for i in arreglo:
+                y = self.__data['val'][i][inicio:fin]
+                plt.plot(x, y + i * 1000)
+            plt.xlabel('Tiempo (s)', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Señal fisiológica', fontsize=18, color='white', fontweight='bold')
+            plt.legend(['S1', 'S2', 'S3', 'S4', 'S5'], loc='upper right', fontsize=12)
+            plt.show()
+
+
+    def graficar_espectro(self, inicio, fin, arreglo):
+        espectro = np.fft.fft(self.__data['val'][arreglo][inicio:fin])
+        frecuencias = np.fft.fftfreq(len(espectro))
+        frecuencias_pos = frecuencias[:len(frecuencias) // 2]
+        amplitudes = np.abs(espectro) / len(espectro)
+        with plt.style.context('dark_background'):
+            plt.plot(frecuencias_pos, amplitudes[:len(amplitudes) // 2])
+            plt.xlabel('Frecuencia (Hz)', fontsize=14, color='white', fontweight='bold')
+            plt.ylabel('Amplitud (mV)', fontsize=14, color='white', fontweight='bold')
+            plt.title('Espectro de frecuencias', fontsize=18, color='white', fontweight='bold')
             plt.show()
 
     def promedio_datos_csv(self):
